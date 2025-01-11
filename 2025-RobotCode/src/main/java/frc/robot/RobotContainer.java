@@ -82,7 +82,7 @@ public class RobotContainer {
     // Trigger buttonD9 = new JoystickButton(debug_secondary, 9);
 
     public RobotContainer() {
-        swerveSubsystem.setDefaultCommand(new SwerveJoystickCmd(
+        swerveSubsystem.setDefaultCommand(new DriveSwerve(
                 swerveSubsystem,
                 /* 
                 In teleop, if the robot is moving opposite of the way the joystick is being moved, change one of these
@@ -115,45 +115,45 @@ public class RobotContainer {
         X1.onTrue(new ResetHeading(swerveSubsystem));
         O2.onTrue(new ResyncEncoders(swerveSubsystem)); 
         Square3.onTrue(new RedoOffsets(swerveSubsystem));
-        // Triangle4.onTrue(new));
-        // leftShoulder5.whileTrue(new));
-        // rightShoulder6.whileTrue(new));
-        // leftTrigger7.whileTrue(new));
-        // rightTrigger8.whileTrue(new));
-        // leftStickPress9.onTrue(new));
-        // rightStickPress10.onTrue(new));
-        // dPadNorth.whileTrue(new));
-        // dPadEast.whileTrue(new));
-        // dPadSouth.whileTrue(new));
-        // dPadWest.whileTrue(new));
+        // Triangle4.onTrue(new);
+        // leftShoulder5.onTrue(new);
+        // rightShoulder6.onTrue(new);
+        // leftTrigger7.onTrue(new);
+        // rightTrigger8.onTrue(new);
+        // leftStickPress9.onTrue(new);
+        // rightStickPress10.onTrue(new);
+        // dPadNorth.onTrue(new);
+        // dPadEast.onTrue(new);
+        // dPadSouth.onTrue(new);
+        // dPadWest.onTrue(new);
 
-        // buttonT1.whileTrue(new );
-        // buttonT2.whileTrue(new ); 
-        // buttonT3.whileTrue(new );
+        // buttonT1.onTrue(new);
+        // buttonT2.onTrue(new); 
+        // buttonT3.onTrue(new);
         // buttonT4.onTrue(new);
         // buttonT5.onTrue(new);
-        // buttonT6.whileTrue(new);
-        // buttonT7.whileTrue(new);
-        // buttonT8.whileTrue(new);
-        // buttonT9.whileTrue(new);
+        // buttonT6.onTrue(new);
+        // buttonT7.onTrue(new);
+        // buttonT8.onTrue(new);
+        // buttonT9.onTrue(new);
         // buttonT10.onTrue(new);
 
-        // buttonB1.whileTrue(new);
-        // buttonB2.whileTrue(new);
-        // buttonB3.whileTrue(new);
-        // buttonB4.whileTrue(new);
-        // buttonB5.whileTrue(new);
+        // buttonB1.onTrue(new);
+        // buttonB2.onTrue(new);
+        // buttonB3.onTrue(new);
+        // buttonB4.onTrue(new);
+        // buttonB5.onTrue(new);
         // buttonB6.onTrue(new);
-        // buttonB6.onTrue(new));
-        // buttonB7.onTrue(new));
-        // buttonB8.onTrue(new));
-        // buttonB8.whileTrue(new);
-        // buttonB9.whileTrue(new);
-        // buttonB10.whileTrue(new);
+        // buttonB6.onTrue(new);
+        // buttonB7.onTrue(new);
+        // buttonB8.onTrue(new);
+        // buttonB8.onTrue(new);
+        // buttonB9.onTrue(new);
+        // buttonB10.onTrue(new);
 
-        // // buttonD7.whileTrue(new);
-        // // buttonD8.whileTrue(new);
-        // // buttonD9.whileTrue(new);
+        // // buttonD7.onTrue(new);
+        // // buttonD8.onTrue(new);
+        // // buttonD9.onTrue(new);
     }
 
     public Command getAutonomousCommand() {
