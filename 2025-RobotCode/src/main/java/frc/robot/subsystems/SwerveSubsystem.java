@@ -131,7 +131,7 @@ public class SwerveSubsystem extends SubsystemBase {
         gyro.setAngleAdjustment(getHeading());
     }
 
-    public void redoOffsets () {
+    public void applyOffsets () {
         Preferences.setDouble("FL-Offset", 0);
         Preferences.setDouble("BL-Offset", 0);
         Preferences.setDouble("FR-Offset", 0);
