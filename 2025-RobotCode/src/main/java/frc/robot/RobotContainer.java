@@ -114,7 +114,7 @@ public class RobotContainer {
 
         X1.onTrue(new ResetHeading(swerveSubsystem));
         O2.onTrue(new ResyncEncoders(swerveSubsystem)); 
-        Square3.onTrue(new RedoOffsets(swerveSubsystem));
+        Square3.onTrue(new ApplyOffsets(swerveSubsystem));
         // Triangle4.onTrue(new);
         // leftShoulder5.onTrue(new);
         // rightShoulder6.onTrue(new);
