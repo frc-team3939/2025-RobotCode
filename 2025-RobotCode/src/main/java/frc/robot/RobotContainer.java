@@ -12,6 +12,7 @@ import frc.robot.Constants.OIConstants;
 
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+import frc.robot.commands.Intake.SpinIntake;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -23,6 +24,7 @@ public class RobotContainer {
     Make sure you actually import the subsystem in the same manner as we do with the SwerveSubsystem above.
     */
     private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
+    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
     // Sets the Joystick/Physical Driver Station ports, change port order in Driver Station to the numbers below.
     private final Joystick driverJoystick = new Joystick(OIConstants.kDriverControllerPort); // 0
@@ -70,8 +72,8 @@ public class RobotContainer {
     Trigger buttonB2 = new JoystickButton(driverstationBottom, 2);
     Trigger buttonB3 = new JoystickButton(driverstationBottom, 3);
     Trigger buttonB4 = new JoystickButton(driverstationBottom, 4);
-    Trigger buttonB5 = new JoystickButton(driverstationBottom, 5);
-    Trigger buttonB6 = new JoystickButton(driverstationBottom, 6);
+    Trigger ButtonB5 = new JoystickButton(driverstationBottom, 5);
+    Trigger ButtonB6 = new JoystickButton(driverstationBottom, 6);
     Trigger buttonB7 = new JoystickButton(driverstationBottom, 7);
     Trigger buttonB8 = new JoystickButton(driverstationBottom, 8);
     Trigger buttonB9 = new JoystickButton(driverstationBottom, 9);
@@ -97,7 +99,8 @@ public class RobotContainer {
         
         // Use this line to add commands to PathPlanner, make sure to get spelling correct.
         NamedCommands.registerCommand("ResetHeading", new ResetHeading(swerveSubsystem));
-        
+        NamedCommands.registerCommand("spinIntake", new SpinIntake(intakeSubsystem, 0.69));
+
         // Build an auto chooser. This will use Commands.none() as the default option.
         autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -112,9 +115,9 @@ public class RobotContainer {
         which is set with the Command Scheduler.
         */
 
-        X1.onTrue(new ResetHeading(swerveSubsystem));
-        O2.onTrue(new ResyncEncoders(swerveSubsystem)); 
-        Square3.onTrue(new ApplyOffsets(swerveSubsystem));
+        X1.whileTrue(new ResetHeading(swerveSubsystem));
+        O2.whileTrue(new ResyncEncoders(swerveSubsystem)); 
+        Square3.whileTrue(new ApplyOffsets(swerveSubsystem));
         // Triangle4.onTrue(new);
         // leftShoulder5.onTrue(new);
         // rightShoulder6.onTrue(new);
@@ -131,7 +134,7 @@ public class RobotContainer {
         // buttonT2.onTrue(new); 
         // buttonT3.onTrue(new);
         // buttonT4.onTrue(new);
-        // buttonT5.onTrue(new);
+         buttonT5.whileTrue(new SpinIntake(intakeSubsystem, 0.69));
         // buttonT6.onTrue(new);
         // buttonT7.onTrue(new);
         // buttonT8.onTrue(new);
@@ -161,3 +164,4 @@ public class RobotContainer {
   }
     
 }
+//₍ᐢ. .ᐢ₎
