@@ -28,7 +28,7 @@ public class SpinIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.spinIntake(-speed);
+    intakeSubsystem.spinIntake(speed);
 
   }
 
@@ -43,12 +43,12 @@ public class SpinIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (intakeSubsystem.isbeambreaktripped()) {
-      return true; 
-    } 
-    else{
+   // if (intakeSubsystem.isbeambreaktripped()) {
+    //return true; 
+   //} 
+    //else{
       return false;
-    }  
+    //}  
 
   }
 }

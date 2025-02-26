@@ -26,6 +26,8 @@ public class RobotContainer {
     private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
+    private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+
     // Sets the Joystick/Physical Driver Station ports, change port order in Driver Station to the numbers below.
     private final Joystick driverJoystick = new Joystick(OIConstants.kDriverControllerPort); // 0
     private final Joystick driverstationTop = new Joystick(OIConstants.kTopHalfButtonBoardPort); // 1
@@ -118,25 +120,25 @@ public class RobotContainer {
         X1.whileTrue(new ResetHeading(swerveSubsystem));
         O2.whileTrue(new ResyncEncoders(swerveSubsystem)); 
         Square3.whileTrue(new ApplyOffsets(swerveSubsystem));
-        // Triangle4.onTrue(new);
-        // leftShoulder5.onTrue(new);
-        // rightShoulder6.onTrue(new);
-        // leftTrigger7.onTrue(new);
+         Triangle4.whileTrue(new SpinIntake(intakeSubsystem, -0.50));
+         leftShoulder5.onTrue(new ElevatorShift(elevatorSubsystem, -1));
+         rightShoulder6.onTrue(new ElevatorShift(elevatorSubsystem, 1));
+         leftTrigger7.whileTrue(new SpinIntake(intakeSubsystem, 0.50));
         // rightTrigger8.onTrue(new);
         // leftStickPress9.onTrue(new);
         // rightStickPress10.onTrue(new);
-        // dPadNorth.onTrue(new);
+        //dPadNorth.onTrue(new);
         // dPadEast.onTrue(new);
         // dPadSouth.onTrue(new);
         // dPadWest.onTrue(new);
 
-        // buttonT1.onTrue(new);
-        // buttonT2.onTrue(new); 
-        // buttonT3.onTrue(new);
-        // buttonT4.onTrue(new);
-         buttonT5.whileTrue(new SpinIntake(intakeSubsystem, 0.69));
-        // buttonT6.onTrue(new);
-        // buttonT7.onTrue(new);
+         buttonT1.onTrue(new ElevatorShift(elevatorSubsystem, 23));
+         buttonT2.onTrue(new ElevatorShift(elevatorSubsystem, 4)); 
+         buttonT3.onTrue(new ElevatorShift(elevatorSubsystem, 0)); //L2
+         buttonT4.onTrue(new ElevatorShift(elevatorSubsystem, 0)); //L3
+         buttonT5.onTrue(new ElevatorShift(elevatorSubsystem, 0)); //L4
+         //buttonT6.onTrue(new);
+         //buttonT7.onTrue(new);
         // buttonT8.onTrue(new);
         // buttonT9.onTrue(new);
         // buttonT10.onTrue(new);
