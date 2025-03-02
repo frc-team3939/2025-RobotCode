@@ -6,21 +6,21 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ElevatorSubsystem;
 
-public class ElevatorShift extends Command {
+public class ElevatorAbsolutePosition extends Command {
   /** Creates a new instance of ElevatorShift. */
   private final ElevatorSubsystem elevatorSubsystem;
-  private final double clockIn;
+  private final double clockOut;
 
-  public ElevatorShift(ElevatorSubsystem elevatorSubsystem, double clockIn) {
+  public ElevatorAbsolutePosition(ElevatorSubsystem elevatorSubsystem, double clockIn) {
     this.elevatorSubsystem = elevatorSubsystem;
-    this.clockIn = clockIn;
+    this.clockOut = clockIn;
     addRequirements(elevatorSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double target = this.clockIn + elevatorSubsystem.getPosition();
+    double target = this.clockOut;
     elevatorSubsystem.setPosition(target);
   }
 

@@ -56,7 +56,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     liftPosition = 0;
 
 
-    bottomLimitSwitch = new DigitalInput(0);
+    bottomLimitSwitch = new DigitalInput(2);
 
      //IdleMode is brake vs coast. Brake stops when it stops recieving power, coast will let it coast.
     elevatorConfigOne.idleMode(IdleMode.kBrake);
@@ -79,6 +79,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     .i(0)
     .d(0);
 
+    elevatorConfigOne.closedLoop.maxMotion
+    .maxVelocity(640)
+    .maxAcceleration(320)
+    .allowedClosedLoopError(.125);
+
+    resetPosition();
+
     elevatorMotorOne.configure(elevatorConfigOne, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     elevatorMotorTwo.configure(elevatorConfigTwo, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
@@ -89,10 +96,20 @@ public class ElevatorSubsystem extends SubsystemBase {
   
   @Override
   public void periodic() {
-    elevatorController.setReference(liftPosition, ControlType.kPosition);
+    if (liftPosition < 1) {
+     elevatorMotorOne.set(0);
+     elevatorMotorTwo.set(0);
+    }
+    else {
+      elevatorController.setReference(liftPosition, ControlType.kMAXMotionPositionControl);
+    }
+
+   // elevatorMotorOne.set(0);
+    //elevatorMotorTwo.set(0);
     SmartDashboard.putNumber("elevator position",this.elevatorCoderOne.getPosition());
     SmartDashboard.putNumber("elevator target",liftPosition);
     SmartDashboard.putNumber("Favorite Number", 7);
+
   }
 
   public double getPosition() {
@@ -102,6 +119,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void resetPosition() {
     elevatorCoderOne.setPosition(0);
     elevatorCoderTwo.setPosition(0);
+    liftPosition = 0;
   }
 
 }

@@ -1,27 +1,24 @@
-// Reapplies the offsets set by the preferences
-// without having to deploy code.
+
+// Resets the current rotation of the gyro
+// to be considered 0.
 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ElevatorSubsystem;
 
-public class ElevatorShift extends Command {
-  /** Creates a new instance of ElevatorShift. */
+public class ResetElevator extends Command {
+  /** Creates a new ZeroHeading. */
   private final ElevatorSubsystem elevatorSubsystem;
-  private final double clockIn;
-
-  public ElevatorShift(ElevatorSubsystem elevatorSubsystem, double clockIn) {
+  public ResetElevator(ElevatorSubsystem elevatorSubsystem) {
     this.elevatorSubsystem = elevatorSubsystem;
-    this.clockIn = clockIn;
     addRequirements(elevatorSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double target = this.clockIn + elevatorSubsystem.getPosition();
-    elevatorSubsystem.setPosition(target);
+    elevatorSubsystem.resetPosition();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,3 +35,4 @@ public class ElevatorShift extends Command {
     return true;
   }
 }
+//₍ᐢ. .ᐢ₎

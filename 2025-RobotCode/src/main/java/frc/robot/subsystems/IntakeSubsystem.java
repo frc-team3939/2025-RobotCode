@@ -12,7 +12,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-//import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -32,7 +32,8 @@ public class IntakeSubsystem extends SubsystemBase {
   private double PreviousI;
   private double PreviousD;
 
- // private final DigitalInput beamBreak;
+  private final DigitalInput topbeamBreak;
+  private final DigitalInput bottombeamBreak;
 
   public IntakeSubsystem() {
 
@@ -42,7 +43,8 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeConfig = new SparkMaxConfig();
 
     intakeController = intakeMotor.getClosedLoopController();
-    //beamBreak = new DigitalInput(1);
+    topbeamBreak = new DigitalInput(1);
+    bottombeamBreak = new DigitalInput(0);
     
     SmartDashboard.setDefaultNumber("IntakeP", 0.001);
     SmartDashboard.setDefaultNumber("IntakeI", 0);
@@ -65,9 +67,13 @@ public class IntakeSubsystem extends SubsystemBase {
     // A digital input is the slots 0-9 on the RoboRIO in the "DIO" area. You plug in limit switches into here normally. Essentially, this declaration points to the number 9 slot on the DIO. 
   }
 
-    //public boolean isbeambreaktripped() {
-        //return beamBreak.get();
-    //}
+    public boolean istopbeambreaktripped() {
+        return topbeamBreak.get();
+    }
+
+    public boolean isbottombeambreaktripped() {
+      return bottombeamBreak.get();
+    }
   /**
    * Simple function to spin the intake motor at the parameter speed. 
    * @param speed Speed between -1.0 and 1.0.
@@ -82,7 +88,8 @@ public class IntakeSubsystem extends SubsystemBase {
    * Simple function to stop the intake. It is good to have this as opposed to running spinIntake(0), because it ensures there is no error.
    */
   public void stopIntake() {
-   intakeController.setReference(0, ControlType.kVelocity);
+   //intakeController.setReference(0, ControlType.kVelocity);
+   intakeMotor.set(0);
   }
 
   /**
@@ -132,5 +139,8 @@ public class IntakeSubsystem extends SubsystemBase {
      PreviousP = newP;
      PreviousI = newI;
      PreviousD = newD; 
+
+     SmartDashboard.putBoolean("Top Beam Break Tripped?", istopbeambreaktripped());
+     SmartDashboard.putBoolean("Bottom Beam Break Tripped?", isbottombeambreaktripped());
    }
 }

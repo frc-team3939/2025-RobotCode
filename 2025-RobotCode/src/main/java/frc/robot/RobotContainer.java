@@ -12,6 +12,7 @@ import frc.robot.Constants.OIConstants;
 
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+import frc.robot.commands.Intake.IntelligentIntake;
 import frc.robot.commands.Intake.SpinIntake;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -74,8 +75,8 @@ public class RobotContainer {
     Trigger buttonB2 = new JoystickButton(driverstationBottom, 2);
     Trigger buttonB3 = new JoystickButton(driverstationBottom, 3);
     Trigger buttonB4 = new JoystickButton(driverstationBottom, 4);
-    Trigger ButtonB5 = new JoystickButton(driverstationBottom, 5);
-    Trigger ButtonB6 = new JoystickButton(driverstationBottom, 6);
+    Trigger buttonB5 = new JoystickButton(driverstationBottom, 5);
+    Trigger buttonB6 = new JoystickButton(driverstationBottom, 6);
     Trigger buttonB7 = new JoystickButton(driverstationBottom, 7);
     Trigger buttonB8 = new JoystickButton(driverstationBottom, 8);
     Trigger buttonB9 = new JoystickButton(driverstationBottom, 9);
@@ -101,7 +102,16 @@ public class RobotContainer {
         
         // Use this line to add commands to PathPlanner, make sure to get spelling correct.
         NamedCommands.registerCommand("ResetHeading", new ResetHeading(swerveSubsystem));
-        NamedCommands.registerCommand("spinIntake", new SpinIntake(intakeSubsystem, 0.69));
+        NamedCommands.registerCommand("ElevatorL0", new ElevatorAbsolutePosition(elevatorSubsystem,0));
+        NamedCommands.registerCommand("ElevatorL1", new ElevatorAbsolutePosition(elevatorSubsystem,4));
+        NamedCommands.registerCommand("ElevatorL2", new ElevatorAbsolutePosition(elevatorSubsystem,6));
+        NamedCommands.registerCommand("ElevatorL3", new ElevatorAbsolutePosition(elevatorSubsystem,13));
+        NamedCommands.registerCommand("ElevatorL4", new ElevatorAbsolutePosition(elevatorSubsystem,25));
+        NamedCommands.registerCommand("Intake", new IntelligentIntake(intakeSubsystem,-.50));
+        NamedCommands.registerCommand("Shoot", new SpinIntake(intakeSubsystem,-.50));
+        NamedCommands.registerCommand("L4 Shoot", new SpinIntake(intakeSubsystem,-.40));
+        NamedCommands.registerCommand("Eject", new SpinIntake(intakeSubsystem,.50));
+
 
         // Build an auto chooser. This will use Commands.none() as the default option.
         autoChooser = AutoBuilder.buildAutoChooser();
@@ -121,40 +131,39 @@ public class RobotContainer {
         O2.whileTrue(new ResyncEncoders(swerveSubsystem)); 
         Square3.whileTrue(new ApplyOffsets(swerveSubsystem));
          Triangle4.whileTrue(new SpinIntake(intakeSubsystem, -0.50));
-         leftShoulder5.onTrue(new ElevatorShift(elevatorSubsystem, -1));
-         rightShoulder6.onTrue(new ElevatorShift(elevatorSubsystem, 1));
-         leftTrigger7.whileTrue(new SpinIntake(intakeSubsystem, 0.50));
+         leftShoulder5.onTrue(new ElevatorShift(elevatorSubsystem, -0.5));
+         rightShoulder6.onTrue(new ElevatorShift(elevatorSubsystem, 0.5));
+         leftTrigger7.whileTrue(new SpinIntake(intakeSubsystem, 0.5));
         // rightTrigger8.onTrue(new);
         // leftStickPress9.onTrue(new);
         // rightStickPress10.onTrue(new);
         //dPadNorth.onTrue(new);
-        // dPadEast.onTrue(new);
+        // dPadEast.onrue(new);
         // dPadSouth.onTrue(new);
         // dPadWest.onTrue(new);
 
-         buttonT1.onTrue(new ElevatorShift(elevatorSubsystem, 23));
-         buttonT2.onTrue(new ElevatorShift(elevatorSubsystem, 4)); 
-         buttonT3.onTrue(new ElevatorShift(elevatorSubsystem, 0)); //L2
-         buttonT4.onTrue(new ElevatorShift(elevatorSubsystem, 0)); //L3
-         buttonT5.onTrue(new ElevatorShift(elevatorSubsystem, 0)); //L4
-         //buttonT6.onTrue(new);
-         //buttonT7.onTrue(new);
-        // buttonT8.onTrue(new);
-        // buttonT9.onTrue(new);
-        // buttonT10.onTrue(new);
+         buttonT1.onTrue(new ElevatorAbsolutePosition(elevatorSubsystem, 0)); // Brings elevator to 0
+         buttonT2.onTrue(new ElevatorAbsolutePosition(elevatorSubsystem, 4)); // L1
+         buttonT3.onTrue(new ElevatorAbsolutePosition(elevatorSubsystem, 6)); // L2
+         buttonT4.onTrue(new ElevatorAbsolutePosition(elevatorSubsystem, 13)); // L3
+         buttonT5.onTrue(new ElevatorAbsolutePosition(elevatorSubsystem, 25)); // L4
+         buttonT6.whileTrue(new IntelligentIntake(intakeSubsystem, -.50)); // Smart Intake
+         //buttonT7.whileTrue(new SpinIntake(intakeSubsystem, -.50));
+         buttonT8.whileTrue(new SpinIntake(intakeSubsystem, -.50));
+         //buttonT9.whileTrue(new);
+         buttonT10.onTrue(new SpinIntake(intakeSubsystem, .50));
 
-        // buttonB1.onTrue(new);
+         buttonB1.whileTrue(new SpinIntake(intakeSubsystem, -.40));
         // buttonB2.onTrue(new);
         // buttonB3.onTrue(new);
         // buttonB4.onTrue(new);
         // buttonB5.onTrue(new);
-        // buttonB6.onTrue(new);
-        // buttonB6.onTrue(new);
+         buttonB6.onTrue(new ResetElevator(elevatorSubsystem));
         // buttonB7.onTrue(new);
         // buttonB8.onTrue(new);
         // buttonB8.onTrue(new);
-        // buttonB9.onTrue(new);
-        // buttonB10.onTrue(new);
+         buttonB9.onTrue(new ResetHeading(swerveSubsystem));
+         buttonB10.onTrue(new ResyncEncoders(swerveSubsystem));
 
         // // buttonD7.onTrue(new);
         // // buttonD8.onTrue(new);
