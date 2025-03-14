@@ -18,7 +18,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+// import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -35,13 +35,13 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final RelativeEncoder elevatorCoderOne;
   private final RelativeEncoder elevatorCoderTwo;
 
-  private final DigitalInput bottomLimitSwitch;
+ // private final DigitalInput bottomLimitSwitch;
 
   private final SparkClosedLoopController elevatorController;
 
-  private double PreviousP;
-  private double PreviousI;
-  private double PreviousD;
+  // private double PreviousP;
+  // private double PreviousI;
+  // private double PreviousD;
 
   private double liftPosition;
 
@@ -66,7 +66,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     SmartDashboard.setDefaultNumber("ElevatorD", 0);
 
 
-    bottomLimitSwitch = new DigitalInput(2);
+
 
      //IdleMode is brake vs coast. Brake stops when it stops recieving power, coast will let it coast.
     elevatorConfigOne.idleMode(IdleMode.kBrake);

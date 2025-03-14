@@ -1,10 +1,10 @@
 
 package frc.robot.subsystems;
 
- import com.revrobotics.spark.SparkClosedLoopController;
+ //import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
  import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkBase.ControlType;
+//import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
  import com.revrobotics.spark.SparkBase.ResetMode;
  import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -22,7 +22,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final SparkMax intakeMotor;
   private final SparkMaxConfig intakeConfig;
 
-  private final SparkClosedLoopController intakeController;
+  //private final SparkClosedLoopController intakeController;
 
   private final RelativeEncoder intakeCoder;
 
@@ -42,7 +42,7 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor = new SparkMax(55, MotorType.kBrushless);
     intakeConfig = new SparkMaxConfig();
 
-    intakeController = intakeMotor.getClosedLoopController();
+    //intakeController = intakeMotor.getClosedLoopController();
     topbeamBreak = new DigitalInput(1);
     bottombeamBreak = new DigitalInput(0);
     
