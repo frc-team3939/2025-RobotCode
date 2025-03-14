@@ -102,11 +102,11 @@ public class RobotContainer {
         
         // Use this line to add commands to PathPlanner, make sure to get spelling correct.
         NamedCommands.registerCommand("ResetHeading", new ResetHeading(swerveSubsystem));
-        NamedCommands.registerCommand("ElevatorL0", new ElevatorAbsolutePosition(elevatorSubsystem,0));
-        NamedCommands.registerCommand("ElevatorL1", new ElevatorAbsolutePosition(elevatorSubsystem,4));
-        NamedCommands.registerCommand("ElevatorL2", new ElevatorAbsolutePosition(elevatorSubsystem,6));
-        NamedCommands.registerCommand("ElevatorL3", new ElevatorAbsolutePosition(elevatorSubsystem,13));
-        NamedCommands.registerCommand("ElevatorL4", new ElevatorAbsolutePosition(elevatorSubsystem,25));
+        NamedCommands.registerCommand("ElevatorL0", new ElevatorZero(elevatorSubsystem,0));
+        NamedCommands.registerCommand("ElevatorL1", new AutoElevatorAbsolutePosition(elevatorSubsystem,4));
+        NamedCommands.registerCommand("ElevatorL2", new AutoElevatorAbsolutePosition(elevatorSubsystem,6));
+        NamedCommands.registerCommand("ElevatorL3", new AutoElevatorAbsolutePosition(elevatorSubsystem,13));
+        NamedCommands.registerCommand("ElevatorL4", new AutoElevatorAbsolutePosition(elevatorSubsystem,25));
         NamedCommands.registerCommand("Intake", new IntelligentIntake(intakeSubsystem,-.50));
         NamedCommands.registerCommand("Shoot", new SpinIntake(intakeSubsystem,-.50));
         NamedCommands.registerCommand("L4 Shoot", new SpinIntake(intakeSubsystem,-.40));
@@ -127,14 +127,14 @@ public class RobotContainer {
         which is set with the Command Scheduler.
         */
 
-        X1.whileTrue(new ResetHeading(swerveSubsystem));
-        O2.whileTrue(new ResyncEncoders(swerveSubsystem)); 
-        Square3.whileTrue(new ApplyOffsets(swerveSubsystem));
-         Triangle4.whileTrue(new SpinIntake(intakeSubsystem, -0.50));
+         X1.onTrue(new ResetHeading(swerveSubsystem));
+         O2.onTrue(new ResyncEncoders(swerveSubsystem)); 
+         //Square3.whileTrue(new ApplyOffsets(swerveSubsystem));
+         //Triangle4.whileTrue(new SpinIntake(intakeSubsystem, -0.50));
          leftShoulder5.onTrue(new ElevatorShift(elevatorSubsystem, -0.5));
          rightShoulder6.onTrue(new ElevatorShift(elevatorSubsystem, 0.5));
          leftTrigger7.whileTrue(new SpinIntake(intakeSubsystem, 0.5));
-        // rightTrigger8.onTrue(new);
+         rightTrigger8.onTrue(new SpinIntake(intakeSubsystem, -0.5));
         // leftStickPress9.onTrue(new);
         // rightStickPress10.onTrue(new);
         //dPadNorth.onTrue(new);
@@ -142,16 +142,16 @@ public class RobotContainer {
         // dPadSouth.onTrue(new);
         // dPadWest.onTrue(new);
 
-         buttonT1.onTrue(new ElevatorAbsolutePosition(elevatorSubsystem, 0)); // Brings elevator to 0
-         buttonT2.onTrue(new ElevatorAbsolutePosition(elevatorSubsystem, 4)); // L1
+         buttonT1.onTrue(new ElevatorZero(elevatorSubsystem, 0)); // Brings elevator to 0
+         buttonT2.onTrue(new ElevatorAbsolutePosition(elevatorSubsystem, 1)); // L1
          buttonT3.onTrue(new ElevatorAbsolutePosition(elevatorSubsystem, 6)); // L2
-         buttonT4.onTrue(new ElevatorAbsolutePosition(elevatorSubsystem, 13)); // L3
+         buttonT4.onTrue(new ElevatorAbsolutePosition(elevatorSubsystem, 13.5)); // L3
          buttonT5.onTrue(new ElevatorAbsolutePosition(elevatorSubsystem, 25)); // L4
          buttonT6.whileTrue(new IntelligentIntake(intakeSubsystem, -.50)); // Smart Intake
          //buttonT7.whileTrue(new SpinIntake(intakeSubsystem, -.50));
          buttonT8.whileTrue(new SpinIntake(intakeSubsystem, -.50));
-         //buttonT9.whileTrue(new);
-         buttonT10.onTrue(new SpinIntake(intakeSubsystem, .50));
+         buttonT9.whileTrue(new SpinIntake(intakeSubsystem, -.40));
+         buttonT10.whileTrue(new SpinIntake(intakeSubsystem, .50));
 
          buttonB1.whileTrue(new SpinIntake(intakeSubsystem, -.40));
         // buttonB2.onTrue(new);

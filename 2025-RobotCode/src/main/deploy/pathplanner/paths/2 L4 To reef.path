@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
-        "y": 7.0
+        "x": 1.6183401639344261,
+        "y": 7.393545081967213
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0,
-        "y": 7.0
+        "x": 2.348065961266573,
+        "y": 6.805610236754452
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "2 L4 to Human Player"
     },
     {
       "anchor": {
-        "x": 4.0,
-        "y": 6.0
+        "x": 3.9319672131147536,
+        "y": 5.235758196721312
       },
       "prevControl": {
-        "x": 3.0,
-        "y": 6.0
+        "x": 3.4063026941541694,
+        "y": 5.653523421136592
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 1.6,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -150.0
   },
   "reversed": false,
-  "folder": "Left 3 L4",
+  "folder": "Left 2 L4",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -145.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

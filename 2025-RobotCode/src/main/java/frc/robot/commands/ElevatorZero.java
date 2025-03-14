@@ -1,20 +1,21 @@
-package frc.robot.commands.Intake;
-// Copyright (c) FIRST and other WPILib contributors.
+
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.commands;
 
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 
 
-public class IntelligentIntake extends Command {
-  private final IntakeSubsystem intakeSubsystem;
+public class ElevatorZero extends Command {
+  private final ElevatorSubsystem elevatorSubsystem;
   
   enum State {
-    FULL_SPEED,
-    HALF_SPEED,
+    POWERED,
+    UNPOWERED,
     END,
   }
 
@@ -22,18 +23,18 @@ public class IntelligentIntake extends Command {
   
 
   private double speed;
-  public IntelligentIntake(IntakeSubsystem isubsystem, double speed) {
-    intakeSubsystem = isubsystem;
+  public ElevatorZero(ElevatorSubsystem esubsystem, double speed) {
+    elevatorSubsystem = esubsystem;
     this.speed = speed;
-    addRequirements(intakeSubsystem);
-    state = State.FULL_SPEED;
+    addRequirements(elevatorSubsystem);
+    state = State.POWERED;
   }
 
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    state = State.FULL_SPEED;
+    state = State.POWERED;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,14 +42,14 @@ public class IntelligentIntake extends Command {
   public void execute() {
 
     switch (state) {
-      case FULL_SPEED:
-      if (intakeSubsystem.istopbeambreaktripped() ==false) {
-        state = State.HALF_SPEED;
+      case POWERED:
+      if (elevatorSubsystem.getPosition() <= 1) {
+        state = State.UNPOWERED;
       }
       break;
 
-      case HALF_SPEED:
-      if (intakeSubsystem.isbottombeambreaktripped() ==false) {
+      case UNPOWERED:
+      if (true) {
         state = State.END;
       }
       break;
@@ -57,26 +58,24 @@ public class IntelligentIntake extends Command {
       break;
     }
     switch (state) {
-      case FULL_SPEED:
-      intakeSubsystem.spinIntake(speed);
+      case POWERED:
+      elevatorSubsystem.setPosition(1);
       break;
 
-      case HALF_SPEED:
-      intakeSubsystem.spinIntake(speed/2);
+      case UNPOWERED:
+      elevatorSubsystem.setPosition(0);
       break;
 
       case END:
-      intakeSubsystem.stopIntake();
       break;
     }
-    SmartDashboard.putString("Intelligent Intake State", state.toString());
+    SmartDashboard.putString("Elevator State", state.toString());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeSubsystem.stopIntake();
-
+ elevatorSubsystem.setPosition(0);
     
   }
 

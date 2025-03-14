@@ -5,11 +5,13 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
@@ -37,6 +39,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   private final SparkClosedLoopController elevatorController;
 
+  private double PreviousP;
+  private double PreviousI;
+  private double PreviousD;
+
   private double liftPosition;
 
 
@@ -55,6 +61,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     liftPosition = 0;
 
+    SmartDashboard.setDefaultNumber("ElevatorP", 0.1);
+    SmartDashboard.setDefaultNumber("ElevatorI", 0.0002);
+    SmartDashboard.setDefaultNumber("ElevatorD", 0);
+
 
     bottomLimitSwitch = new DigitalInput(2);
 
@@ -66,7 +76,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorCoderOne = elevatorMotorOne.getEncoder();
     elevatorCoderTwo = elevatorMotorTwo.getEncoder();
 
-    elevatorConfigTwo.follow(28);
+    elevatorConfigTwo.follow(elevatorMotorOne);
     // Pulley has 18 teeth, belt has 5mm pitch, gearbox ratio is 4.67:1
     // 18*5mm/pi/2/4.67 = 0.1208inches 
     elevatorConfigOne.encoder.positionConversionFactor(0.1208*4.67*4.375/4);
@@ -75,14 +85,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorConfigOne.encoder.velocityConversionFactor(0.1208*4.67*4.375/4);
     
     elevatorConfigOne.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-    .p(.3)
+    .p(0.1)
     .i(0)
-    .d(0);
+    .d(0)
+    .outputRange(-0.35, 0.35).iMaxAccum(10);
 
-    elevatorConfigOne.closedLoop.maxMotion
-    .maxVelocity(640)
-    .maxAcceleration(320)
-    .allowedClosedLoopError(.125);
+    // elevatorConfigOne.closedLoop.maxMotion
+    // .maxVelocity(1280)
+    // .maxAcceleration(12800)
+    // .allowedClosedLoopError(0);
 
     resetPosition();
 
@@ -101,7 +112,8 @@ public class ElevatorSubsystem extends SubsystemBase {
      elevatorMotorTwo.set(0);
     }
     else {
-      elevatorController.setReference(liftPosition, ControlType.kMAXMotionPositionControl);
+      //elevatorController.setReference(liftPosition, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, .08, ArbFFUnits.kPercentOut);
+      elevatorController.setReference(liftPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0, .08, ArbFFUnits.kPercentOut);
     }
 
    // elevatorMotorOne.set(0);
@@ -110,10 +122,30 @@ public class ElevatorSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("elevator target",liftPosition);
     SmartDashboard.putNumber("Favorite Number", 7);
 
+  //   double newP = SmartDashboard.getNumber("ElevatorP", 0.1);
+  //   double newI = SmartDashboard.getNumber("ElevatorI", 0.0002);
+  //   double newD = SmartDashboard.getNumber("ElevatorD", 0);
+
+  //  if (newP != PreviousP || newI != PreviousI || newD != PreviousD){
+  
+  //   elevatorConfigOne.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+  //   .p(SmartDashboard.getNumber("ElevatorP", 0.1))
+  //   .i(SmartDashboard.getNumber("ElevatorI", 0.0002))
+  //   .d(SmartDashboard.getNumber("ElevatorD", 0));  
+
+  //  elevatorMotorOne.configure(elevatorConfigOne, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+  //  }
+  //  PreviousP = newP;
+  //  PreviousI = newI;
+  //  PreviousD = newD; 
   }
 
   public double getPosition() {
     return liftPosition; 
+  }
+
+  public double getEncoder() {
+    return elevatorCoderOne.getPosition();
   }
 
   public void resetPosition() {

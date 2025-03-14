@@ -1,0 +1,73 @@
+// Reapplies the offsets set by the preferences
+// without having to deploy code.
+
+package frc.robot.commands;
+
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.SwerveSubsystem;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
+public class CameraCoralLineup extends Command {
+
+    PhotonCamera rightCamera = new PhotonCamera("ArduCam1");
+    PhotonCamera leftCamera = new PhotonCamera("ArduCam2");
+    boolean rightside = true;
+    Set<Integer> validIDs = new HashSet<>(Arrays.asList(6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22));
+
+  /** Creates a new instance of CameraCoralLineup. */
+  private final SwerveSubsystem swerveSubsystem;
+  public CameraCoralLineup(SwerveSubsystem swerveSubsystem, boolean rightside) {
+    this.swerveSubsystem = swerveSubsystem;
+    this.rightside = rightside;
+    addRequirements(swerveSubsystem);
+  }
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    Transform3d cameraToRobot = new Transform3d(0,0,0, new Rotation3d(0, 0, 45/180*Math.PI));
+    var result = rightCamera.getLatestResult();
+    boolean hasTargets = result.hasTargets();
+    if (hasTargets) {
+        List<PhotonTrackedTarget> targets = result.getTargets();
+        for (PhotonTrackedTarget target : targets) {
+            if (validIDs.contains(target.getFiducialId())) {
+              Pose3d tagPose = new Pose3d(target.bestCameraToTarget.toMatrix());
+              //target.bestCameraToTarget;
+              Pose3d rotatedTarget = tagPose.transformBy(cameraToRobot);
+                
+            }
+            
+        }
+
+    }
+
+  }
+
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {}
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return true;
+  }
+}

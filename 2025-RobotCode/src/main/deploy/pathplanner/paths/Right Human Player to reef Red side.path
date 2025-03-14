@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
-        "y": 7.0
+        "x": 1.5703893442622954,
+        "y": 0.692418032786884
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0,
-        "y": 7.0
+        "x": 2.2994693613933785,
+        "y": 1.291399832933065
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Reef to Human Player, Red"
     },
     {
       "anchor": {
-        "x": 4.0,
-        "y": 6.0
+        "x": 3.9079918032786884,
+        "y": 2.8142418032786884
       },
       "prevControl": {
-        "x": 3.0,
-        "y": 6.0
+        "x": 3.371427084704769,
+        "y": 2.394837946138128
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 58.13402230639634
   },
   "reversed": false,
-  "folder": "Left 3 L4",
+  "folder": "Right 2 L4",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 56.59217541029117
   },
   "useDefaultConstraints": true
 }
