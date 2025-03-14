@@ -3,11 +3,15 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
+
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -19,17 +23,31 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class CameraCoralLineup extends Command {
 
-    PhotonCamera rightCamera = new PhotonCamera("ArduCam1");
-    PhotonCamera leftCamera = new PhotonCamera("ArduCam2");
-    boolean rightside = true;
-    Set<Integer> validIDs = new HashSet<>(Arrays.asList(6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22));
+  PhotonCamera rightCamera = new PhotonCamera("ArduCam1");
+  PhotonCamera leftCamera = new PhotonCamera("ArduCam2");
+  boolean rightside = true;
+  Set<Integer> validIDs = new HashSet<>(Arrays.asList(6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22));
+  private PIDController xSpdController, ySpdController, turningSpdController;
+  private double xSpeed, ySpeed, turningSpeed;
+  private SlewRateLimiter xLimiter, yLimiter, turningLimiter;
+
 
   /** Creates a new instance of CameraCoralLineup. */
   private final SwerveSubsystem swerveSubsystem;
-  public CameraCoralLineup(SwerveSubsystem swerveSubsystem, boolean rightside) {
-    this.swerveSubsystem = swerveSubsystem;
-    this.rightside = rightside;
-    addRequirements(swerveSubsystem);
+    
+    public CameraCoralLineup(SwerveSubsystem swerveSubsystem, boolean rightside) {
+      this.swerveSubsystem = swerveSubsystem;
+      this.rightside = rightside;
+      xSpdController = new PIDController(0.011, 0, 0);
+      xSpdController.setTolerance(2);
+      ySpdController = new PIDController(0.013, 0, 0);
+      ySpdController.setTolerance(2.5);
+      turningSpdController = new PIDController(0.01, 0, 0);
+      turningSpdController.setTolerance(2.5);
+      this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
+      this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
+      this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
+      addRequirements(swerveSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -55,6 +73,7 @@ public class CameraCoralLineup extends Command {
             }
             
         }
+
 
     }
 
