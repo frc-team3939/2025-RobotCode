@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Elevator;
 
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,10 +22,8 @@ public class ElevatorZero extends Command {
   private State state;
   
 
-  private double speed;
   public ElevatorZero(ElevatorSubsystem esubsystem, double speed) {
     elevatorSubsystem = esubsystem;
-    this.speed = speed;
     addRequirements(elevatorSubsystem);
     state = State.POWERED;
   }
