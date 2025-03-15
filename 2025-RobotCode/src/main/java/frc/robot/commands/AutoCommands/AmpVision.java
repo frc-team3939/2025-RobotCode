@@ -91,7 +91,6 @@ public class AmpVision extends Command {
 
         // 1. Get real-time joystick inputs
         
-        double turningSpeed = 0;
         // 3. Make the driving smoother
         xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond / 2;
         ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond / 2;
@@ -105,7 +104,6 @@ public class AmpVision extends Command {
         SmartDashboard.putNumber("visionturningspeed", turningSpeed);
         // 5. Convert chassis speeds to individual module states
         SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-        SmartDashboard.putString("testBRD", moduleStates[3].toString());
         // 6. Output each module states to wheels
         swerveSubsystem.setModuleStates(moduleStates);
     }
