@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class AmpVision extends Command {
+public class RightCoralLineup extends Command {
 
     private final SwerveSubsystem swerveSubsystem;
     private final Supplier<PhotonPipelineResult> visionInfo;
@@ -35,7 +35,7 @@ public class AmpVision extends Command {
      * @param finishOnTargetLoss IF true, command stops on target loss if LOST and NOT regained 
      * for 20 scheduler cycles. (400 ms) For every cycle there is a target, the counter loses 1.
      */
-    public AmpVision(SwerveSubsystem swerveSubsystem, Supplier<PhotonPipelineResult> visionInfo, boolean finishOnTargetLoss) {
+    public RightCoralLineup(SwerveSubsystem swerveSubsystem, Supplier<PhotonPipelineResult> visionInfo, boolean finishOnTargetLoss) {
         this.swerveSubsystem = swerveSubsystem;
         this.visionInfo = visionInfo;
         xSpdController = new PIDController(0.011, 0, 0);
