@@ -21,7 +21,7 @@ import java.util.Set;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-public class CameraCoralLineup extends Command {
+public class FancyReeflLineup extends Command {
 
   PhotonCamera rightCamera = new PhotonCamera("ArduCam1");
   PhotonCamera leftCamera = new PhotonCamera("ArduCam2");
@@ -35,7 +35,7 @@ public class CameraCoralLineup extends Command {
   /** Creates a new instance of CameraCoralLineup. */
   private final SwerveSubsystem swerveSubsystem;
     
-    public CameraCoralLineup(SwerveSubsystem swerveSubsystem, boolean rightside) {
+    public FancyReeflLineup(SwerveSubsystem swerveSubsystem, boolean rightside) {
       this.swerveSubsystem = swerveSubsystem;
       this.rightside = rightside;
       xSpdController = new PIDController(0.011, 0, 0);

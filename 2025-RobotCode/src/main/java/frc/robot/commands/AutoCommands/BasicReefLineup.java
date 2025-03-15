@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class RightCoralLineup extends Command {
+public class BasicReefLineup extends Command {
 
     private final SwerveSubsystem swerveSubsystem;
     private final Supplier<PhotonPipelineResult> visionInfo;
@@ -27,29 +27,31 @@ public class RightCoralLineup extends Command {
     private PhotonPipelineResult visionResult;
     private int targetLostCounter;
     private Set<Integer> validIDs = new HashSet<>(Arrays.asList(6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22));
+    private String side;
+    
+        /**
+         * This command writes swerveModuleStates to a photonvision target.
+         * @param swerveSubsystem Requirement parameter
+         * @param visionInfo PhotonPipelineResult class, input the result
+         * @param finishOnTargetLoss IF true, command stops on target loss if LOST and NOT regained 
+         * for 20 scheduler cycles. (400 ms) For every cycle there is a target, the counter loses 1.
+         */
+        public BasicReefLineup(SwerveSubsystem swerveSubsystem, Supplier<PhotonPipelineResult> visionInfo, String side, boolean finishOnTargetLoss) {
+            this.side = side;
+            this.swerveSubsystem = swerveSubsystem;
+            this.visionInfo = visionInfo;
+            xSpdController = new PIDController(0.011, 0, 0);
+            xSpdController.setTolerance(2.5);
+            ySpdController = new PIDController(0.026, 0, 0);
+            ySpdController.setTolerance(2.5);
+            turningSpdController = new PIDController(0.01, 0, 0);
+            turningSpdController.setTolerance(2.5);
+            this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
+            this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
+            this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
 
-    /**
-     * This command writes swerveModuleStates to a photonvision target.
-     * @param swerveSubsystem Requirement parameter
-     * @param visionInfo PhotonPipelineResult class, input the result
-     * @param finishOnTargetLoss IF true, command stops on target loss if LOST and NOT regained 
-     * for 20 scheduler cycles. (400 ms) For every cycle there is a target, the counter loses 1.
-     */
-    public RightCoralLineup(SwerveSubsystem swerveSubsystem, Supplier<PhotonPipelineResult> visionInfo, boolean finishOnTargetLoss) {
-        this.swerveSubsystem = swerveSubsystem;
-        this.visionInfo = visionInfo;
-        xSpdController = new PIDController(0.011, 0, 0);
-        xSpdController.setTolerance(2.5);
-        ySpdController = new PIDController(0.026, 0, 0);
-        ySpdController.setTolerance(2.5);
-        turningSpdController = new PIDController(0.01, 0, 0);
-        turningSpdController.setTolerance(2.5);
-        this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
-        this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
-        this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
-
-        targetLostCounter = 0;
-        addRequirements(swerveSubsystem);
+            targetLostCounter = 0;
+            addRequirements(swerveSubsystem);
     }
 
     @Override
@@ -63,10 +65,17 @@ public class RightCoralLineup extends Command {
         visionResult = visionInfo.get();
         if (visionResult.hasTargets() == true) {
                 PhotonTrackedTarget target = visionResult.getBestTarget();
-                if (validIDs.contains(target.getFiducialId())) {
-                    xSpeed = -xSpdController.calculate(target.getPitch(), 0);
-                    ySpeed = -ySpdController.calculate(target.getYaw(), 0);
-                    turningSpeed = -turningSpdController.calculate(target.getSkew(), 0);
+                if (validIDs.contains(target.getFiducialId()) && (side.equals("left")|| side.equals("right"))) {
+                    if (side.equals("left")) {
+                        xSpeed = -xSpdController.calculate(target.getPitch(), 0);
+                        ySpeed = -ySpdController.calculate(target.getYaw(), 0);
+                        turningSpeed = -turningSpdController.calculate(target.getSkew(), 0);
+                    }
+                    else if (side.equals("right")){
+                        xSpeed = -xSpdController.calculate(target.getPitch(), 0);
+                        ySpeed = -ySpdController.calculate(target.getYaw(), 0);
+                        turningSpeed = -turningSpdController.calculate(target.getSkew(), 0);
+                    }
                     targetLostCounter = targetLostCounter > 0 ? (targetLostCounter - 1) : 0;
                     SmartDashboard.putNumber("getY", target.getYaw());
                 }
@@ -89,8 +98,6 @@ public class RightCoralLineup extends Command {
             targetLostCounter++;
         }
 
-        // 1. Get real-time joystick inputs
-        
         // 3. Make the driving smoother
         xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond / 2;
         ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond / 2;
@@ -118,9 +125,10 @@ public class RightCoralLineup extends Command {
         // If finishontargetloss is true, the command will exit if it loses its target. 
         // Good for distinction between autonomous and teleoperated control. 
         // We would want it to complete if it loses target in teleop, but not in autonomous such that it does not complete the rest of the sequence.
-        // return finishOnTargetLoss == true ? 
-        // (xSpdController.atSetpoint() && ySpdController.atSetpoint()) || (targetLostCounter >= 20): 
-        // xSpdController.atSetpoint() && ySpdController.atSetpoint();
+        // return finishOnTargetLoss == true ?
+        if((xSpdController.atSetpoint() && ySpdController.atSetpoint()) || (targetLostCounter >= 25)){
+            return true;
+        }
         return false;
     }
 }

@@ -18,6 +18,9 @@ import frc.robot.commands.Elevator.ElevatorShift;
 import frc.robot.commands.Elevator.ElevatorZero;
 import frc.robot.commands.Intake.IntelligentIntake;
 import frc.robot.commands.Intake.SpinIntake;
+import frc.robot.commands.AutoCommands.*;
+
+import org.photonvision.PhotonCamera;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -31,6 +34,8 @@ public class RobotContainer {
     private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
+
+
     private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
     // Sets the Joystick/Physical Driver Station ports, change port order in Driver Station to the numbers below.
@@ -42,6 +47,8 @@ public class RobotContainer {
     // Sends a dropdown for us to choose an auto in the Dashboard.
     private final SendableChooser<Command> autoChooser;
 
+    private final PhotonCamera leftvisionCamera = new PhotonCamera("ArducamLeft");
+    private final PhotonCamera rightvisionCamera = new PhotonCamera("ArducamRight");
 
     /*
     Assigns raw inputs on whichever joystick you're using into buttons we use to control the robot.
@@ -134,7 +141,7 @@ public class RobotContainer {
          X1.onTrue(new ResetHeading(swerveSubsystem));
          O2.onTrue(new ResyncEncoders(swerveSubsystem)); 
          //Square3.whileTrue(new ApplyOffsets(swerveSubsystem));
-         //Triangle4.whileTrue(new SpinIntake(intakeSubsystem, -0.50));
+         Triangle4.whileTrue(new BasicReefLineup(swerveSubsystem, () -> leftvisionCamera.getLatestResult(), "left", true));
          leftShoulder5.onTrue(new ElevatorShift(elevatorSubsystem, -0.5));
          rightShoulder6.onTrue(new ElevatorShift(elevatorSubsystem, 0.5));
          leftTrigger7.whileTrue(new SpinIntake(intakeSubsystem, 0.5));
