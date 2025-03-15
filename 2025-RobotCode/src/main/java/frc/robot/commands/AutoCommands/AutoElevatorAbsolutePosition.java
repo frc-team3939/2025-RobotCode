@@ -1,7 +1,7 @@
 // Reapplies the offsets set by the preferences
 // without having to deploy code.
 
-package frc.robot.commands.Elevator;
+package frc.robot.commands.AutoCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ElevatorSubsystem;

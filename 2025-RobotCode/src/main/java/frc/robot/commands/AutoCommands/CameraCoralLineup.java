@@ -1,7 +1,7 @@
 // Reapplies the offsets set by the preferences
 // without having to deploy code.
 
-package frc.robot.commands;
+package frc.robot.commands.AutoCommands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;

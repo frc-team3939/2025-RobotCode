@@ -1,5 +1,8 @@
-package frc.robot.commands;
+package frc.robot.commands.AutoCommands;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import org.photonvision.targeting.PhotonPipelineResult;
@@ -20,9 +23,11 @@ public class AmpVision extends Command {
     private final Supplier<PhotonPipelineResult> visionInfo;
     private final PIDController xSpdController, ySpdController, turningSpdController;
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
-    private double xSpeed, ySpeed;
+    private double xSpeed, ySpeed, turningSpeed;
     private PhotonPipelineResult visionResult;
     private int targetLostCounter;
+    private Set<Integer> validIDs = new HashSet<>(Arrays.asList(6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22));
+
     /**
      * This command writes swerveModuleStates to a photonvision target.
      * @param swerveSubsystem Requirement parameter
@@ -58,15 +63,17 @@ public class AmpVision extends Command {
         visionResult = visionInfo.get();
         if (visionResult.hasTargets() == true) {
                 PhotonTrackedTarget target = visionResult.getBestTarget();
-                if (target.getFiducialId() == 5 || target.getFiducialId() == 6) {
-                    xSpeed = 0;
+                if (validIDs.contains(target.getFiducialId())) {
+                    xSpeed = -xSpdController.calculate(target.getPitch(), 0);
                     ySpeed = -ySpdController.calculate(target.getYaw(), 0);
+                    turningSpeed = -turningSpdController.calculate(target.getSkew(), 0);
                     targetLostCounter = targetLostCounter > 0 ? (targetLostCounter - 1) : 0;
                     SmartDashboard.putNumber("getY", target.getYaw());
                 }
                 else {
                     xSpeed = 0;
                     ySpeed = 0;
+                    turningSpeed = 0;
                     targetLostCounter++;
                 }  
         } 
@@ -78,6 +85,7 @@ public class AmpVision extends Command {
             //ySpdController.calculate(0, 9);
             xSpeed = 0;
             ySpeed = 0;
+            turningSpeed = 0;
             targetLostCounter++;
         }
 
@@ -87,8 +95,7 @@ public class AmpVision extends Command {
         // 3. Make the driving smoother
         xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond / 2;
         ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond / 2;
-        turningSpeed = turningLimiter.calculate(turningSpeed)
-                * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond / 2;
+        turningSpeed = turningLimiter.calculate(turningSpeed) * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond / 2;
 
         // 4. Construct desired chassis speeds
         ChassisSpeeds chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);

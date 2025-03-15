@@ -12,7 +12,7 @@ import frc.robot.Constants.OIConstants;
 
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
-import frc.robot.commands.Elevator.AutoElevatorAbsolutePosition;
+import frc.robot.commands.AutoCommands.AutoElevatorAbsolutePosition;
 import frc.robot.commands.Elevator.ElevatorAbsolutePosition;
 import frc.robot.commands.Elevator.ElevatorShift;
 import frc.robot.commands.Elevator.ElevatorZero;
