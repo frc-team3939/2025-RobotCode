@@ -204,6 +204,10 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("BR Turning Position" , backRight.getTurningPosition());
         SmartDashboard.putNumber("GetHeading", getHeading());
         
+        SmartDashboard.putNumber("Odom X (m)", getPose().getX());
+        SmartDashboard.putNumber("Odom Y (m)", getPose().getY());
+        SmartDashboard.putNumber("Odom Angle (deg)", getPose().getRotation().getDegrees());
+
     }
 
     

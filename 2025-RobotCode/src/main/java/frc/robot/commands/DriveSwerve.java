@@ -5,6 +5,9 @@
 package frc.robot.commands;
 
 import java.util.function.Supplier;
+
+import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -45,14 +48,18 @@ public class DriveSwerve extends Command {
         double ySpeed = ySpdFunction.get();
         double turningSpeed = turningSpdFunction.get();
 
-        xSpeed = xSpeed > 0 ? Math.pow(xSpeed , 1.6) : -Math.pow(-xSpeed , 1.6);
-        ySpeed = ySpeed > 0 ? Math.pow(ySpeed , 1.6) : -Math.pow(-ySpeed , 1.6);
-        turningSpeed = turningSpeed > 0 ? Math.pow(turningSpeed , 1.6) : -Math.pow(-turningSpeed , 1.6);
+        xSpeed = xSpeed > OIConstants.kDeadband ? xSpeed - OIConstants.kDeadband : (xSpeed < -OIConstants.kDeadband ? xSpeed + OIConstants.kDeadband : 0);
+        ySpeed = ySpeed > OIConstants.kDeadband ? ySpeed - OIConstants.kDeadband : (ySpeed < -OIConstants.kDeadband ? ySpeed + OIConstants.kDeadband : 0);
+        turningSpeed = turningSpeed > OIConstants.kDeadband ? turningSpeed - OIConstants.kDeadband : (turningSpeed < -OIConstants.kDeadband ? turningSpeed + OIConstants.kDeadband : 0);
+
+        xSpeed = xSpeed > 0 ? Math.pow(xSpeed , 2.0) : -Math.pow(-xSpeed , 2.0);
+        ySpeed = ySpeed > 0 ? Math.pow(ySpeed , 2.0) : -Math.pow(-ySpeed , 2.0);
+        turningSpeed = turningSpeed > 0 ? Math.pow(turningSpeed , 2.0) : -Math.pow(-turningSpeed , 2.0);
 
         // 2. Apply deadband
-        xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
-        ySpeed = Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
-        turningSpeed = Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
+        // xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
+        // ySpeed = Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
+        // turningSpeed = Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
 
         // 3. Make the driving smoother
         xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
@@ -68,7 +75,7 @@ public class DriveSwerve extends Command {
                     xSpeed, ySpeed, turningSpeed, swerveSubsystem.getRotation2d());
         } else {
             // Relative to robot
-            chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
+            chassisSpeeds = new ChassisSpeeds(-ySpeed, xSpeed, turningSpeed);
         }
 
         // 5. Convert chassis speeds to individual module states

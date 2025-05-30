@@ -13,8 +13,8 @@ public final class Constants {
 
     public static final class ModuleConstants {
 
-        public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
-        public static final double kDriveMotorGearRatio = 1 / 5.56;
+        public static final double kWheelDiameterMeters = Units.inchesToMeters(3.9);
+        public static final double kDriveMotorGearRatio = 1 / 6.75;
         public static final double kTurningMotorGearRatio = 1 / 12.8;
         public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
         public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
@@ -28,7 +28,7 @@ public final class Constants {
 
         public static final double kTrackWidth = Units.inchesToMeters(18.5);
         // Distance between the center of the right and left wheels in inches.
-        public static final double kWheelBase = Units.inchesToMeters(13.125);
+        public static final double kWheelBase = Units.inchesToMeters(18.5);
         // Distance between the center of the front and back wheels in inches.
         public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
                 new Translation2d(kWheelBase / 2, kTrackWidth / 2), //FL
@@ -115,7 +115,7 @@ public final class Constants {
         public static void main(String[] args) {
             
         }
-        public static final int kDriverFieldOrientedButtonIdx = 1;
+        public static final int kDriverFieldOrientedButtonIdx = 3;
 
         public static final double kDeadband = 0.08;
     }

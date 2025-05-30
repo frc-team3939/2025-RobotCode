@@ -67,14 +67,14 @@ public class BasicReefLineup extends Command {
                 PhotonTrackedTarget target = visionResult.getBestTarget();
                 if (validIDs.contains(target.getFiducialId()) && (side.equals("left")|| side.equals("right"))) {
                     if (side.equals("left")) {
-                        xSpeed = -xSpdController.calculate(target.getPitch(), 0);
-                        ySpeed = -ySpdController.calculate(target.getYaw(), 0);
-                        turningSpeed = -turningSpdController.calculate(target.getSkew(), 0);
+                        xSpeed = -xSpdController.calculate(target.getPitch(), 6.2);
+                        ySpeed = -ySpdController.calculate(target.getYaw(), 23.11);
+                        // turningSpeed = -turningSpdController.calculate(target.getSkew(), 0);
                     }
                     else if (side.equals("right")){
                         xSpeed = -xSpdController.calculate(target.getPitch(), 0);
                         ySpeed = -ySpdController.calculate(target.getYaw(), 0);
-                        turningSpeed = -turningSpdController.calculate(target.getSkew(), 0);
+                        // turningSpeed = -turningSpdController.calculate(target.getSkew(), 0);
                     }
                     targetLostCounter = targetLostCounter > 0 ? (targetLostCounter - 1) : 0;
                     SmartDashboard.putNumber("getY", target.getYaw());
@@ -97,6 +97,7 @@ public class BasicReefLineup extends Command {
             turningSpeed = 0;
             targetLostCounter++;
         }
+        turningSpeed = 0;
 
         // 3. Make the driving smoother
         xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond / 2;

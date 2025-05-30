@@ -12,7 +12,6 @@ import frc.robot.Constants.OIConstants;
 
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
-import frc.robot.commands.AutoCommands.AutoElevatorAbsolutePosition;
 import frc.robot.commands.Elevator.ElevatorAbsolutePosition;
 import frc.robot.commands.Elevator.ElevatorShift;
 import frc.robot.commands.Elevator.ElevatorZero;
@@ -35,8 +34,8 @@ public class RobotContainer {
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
 
-
     private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    private final LEDSubsystem ledSubsystem = new LEDSubsystem(elevatorSubsystem);
 
     // Sets the Joystick/Physical Driver Station ports, change port order in Driver Station to the numbers below.
     private final Joystick driverJoystick = new Joystick(OIConstants.kDriverControllerPort); // 0
@@ -114,7 +113,7 @@ public class RobotContainer {
         // Use this line to add commands to PathPlanner, make sure to get spelling correct.
         NamedCommands.registerCommand("ResetHeading", new ResetHeading(swerveSubsystem));
         NamedCommands.registerCommand("ElevatorL0", new ElevatorZero(elevatorSubsystem,0));
-        NamedCommands.registerCommand("ElevatorL1", new AutoElevatorAbsolutePosition(elevatorSubsystem,4));
+        NamedCommands.registerCommand("ElevatorL1", new AutoElevatorAbsolutePosition(elevatorSubsystem,1));
         NamedCommands.registerCommand("ElevatorL2", new AutoElevatorAbsolutePosition(elevatorSubsystem,6));
         NamedCommands.registerCommand("ElevatorL3", new AutoElevatorAbsolutePosition(elevatorSubsystem,13));
         NamedCommands.registerCommand("ElevatorL4", new AutoElevatorAbsolutePosition(elevatorSubsystem,25));
@@ -122,7 +121,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Shoot", new SpinIntake(intakeSubsystem,-.50));
         NamedCommands.registerCommand("L4 Shoot", new SpinIntake(intakeSubsystem,-.40));
         NamedCommands.registerCommand("Eject", new SpinIntake(intakeSubsystem,.50));
-
+        NamedCommands.registerCommand("Auto Shoot", new AutoShoot(intakeSubsystem, ledSubsystem, -.50));
 
         // Build an auto chooser. This will use Commands.none() as the default option.
         autoChooser = AutoBuilder.buildAutoChooser();
@@ -140,12 +139,12 @@ public class RobotContainer {
 
          X1.onTrue(new ResetHeading(swerveSubsystem));
          O2.onTrue(new ResyncEncoders(swerveSubsystem)); 
-         //Square3.whileTrue(new ApplyOffsets(swerveSubsystem));
+         //Square3.whileTrue(new PathPlannerReefLineup(swerveSubsystem,false));
          Triangle4.whileTrue(new BasicReefLineup(swerveSubsystem, () -> leftvisionCamera.getLatestResult(), "left", true));
-         leftShoulder5.onTrue(new ElevatorShift(elevatorSubsystem, -0.5));
-         rightShoulder6.onTrue(new ElevatorShift(elevatorSubsystem, 0.5));
-         leftTrigger7.whileTrue(new SpinIntake(intakeSubsystem, 0.5));
-         rightTrigger8.onTrue(new SpinIntake(intakeSubsystem, -0.5));
+         //leftShoulder5.onTrue(new ElevatorShift(elevatorSubsystem, -0.5));
+         //rightShoulder6.onTrue(new ElevatorShift(elevatorSubsystem, 0.5));
+        // leftTrigger7.whileTrue(new SpinIntake(intakeSubsystem, 0.5));
+        // rightTrigger8.whileTrue(new SpinIntake(intakeSubsystem, -0.5));
         // leftStickPress9.onTrue(new);
         // rightStickPress10.onTrue(new);
         //dPadNorth.onTrue(new);
@@ -170,7 +169,7 @@ public class RobotContainer {
         // buttonB4.onTrue(new);
         // buttonB5.onTrue(new);
          buttonB6.onTrue(new ResetElevator(elevatorSubsystem));
-        // buttonB7.onTrue(new);
+         buttonB7.onTrue(new ApplyOffsets(swerveSubsystem));
         // buttonB8.onTrue(new);
         // buttonB8.onTrue(new);
          buttonB9.onTrue(new ResetHeading(swerveSubsystem));

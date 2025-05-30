@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1 L4 Reef Right Side"
+            "pathName": "USE Center Test"
           }
         },
         {
@@ -29,10 +29,22 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Auto Shoot"
+                  "name": "L4 Shoot"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center Auto Back"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorL1"
           }
         },
         {
