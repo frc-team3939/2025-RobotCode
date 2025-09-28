@@ -138,7 +138,7 @@ public class RobotContainer {
         */
 
          X1.onTrue(new ResetHeading(swerveSubsystem));
-         O2.onTrue(new ResyncEncoders(swerveSubsystem)); 
+         //O2.onTrue(new ResyncEncoders(swerveSubsystem)); 
          //Square3.whileTrue(new PathPlannerReefLineup(swerveSubsystem,false));
          Triangle4.whileTrue(new BasicReefLineup(swerveSubsystem, () -> leftvisionCamera.getLatestResult(), "left", true));
          //leftShoulder5.onTrue(new ElevatorShift(elevatorSubsystem, -0.5));
