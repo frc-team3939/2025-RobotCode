@@ -65,6 +65,7 @@ public class SwerveModule {
 
         driveConfig.inverted(driveMotorReversed);
         turningConfig.inverted(turningMotorReversed);
+        turningConfig.smartCurrentLimit(20);
 
         driveEncoder = driveMotor.getEncoder();
         turningEncoder = turningMotor.getEncoder();
