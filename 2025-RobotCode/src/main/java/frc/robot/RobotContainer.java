@@ -143,8 +143,8 @@ public class RobotContainer {
          Triangle4.whileTrue(new BasicReefLineup(swerveSubsystem, () -> leftvisionCamera.getLatestResult(), "left", true));
          //leftShoulder5.onTrue(new ElevatorShift(elevatorSubsystem, -0.5));
          //rightShoulder6.onTrue(new ElevatorShift(elevatorSubsystem, 0.5));
-        // leftTrigger7.whileTrue(new SpinIntake(intakeSubsystem, 0.5));
-        // rightTrigger8.whileTrue(new SpinIntake(intakeSubsystem, -0.5));
+        leftTrigger7.whileTrue(new SpinIntake(intakeSubsystem, 0.5));
+        rightTrigger8.whileTrue(new SpinIntake(intakeSubsystem, -0.5));
         // leftStickPress9.onTrue(new);
         // rightStickPress10.onTrue(new);
         //dPadNorth.onTrue(new);
